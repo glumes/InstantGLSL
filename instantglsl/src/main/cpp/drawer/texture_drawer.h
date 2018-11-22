@@ -10,10 +10,10 @@
 #include <opengl_util.h>
 
 
-
-#define  TEXTURE_LOG_TAG    "OpenGLUtil"
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TEXTURE_LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,TEXTURE_LOG_TAG,__VA_ARGS__)
+//
+//#define  TEXTURE_LOG_TAG    "OpenGLUtil"
+//#define  LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TEXTURE_LOG_TAG,__VA_ARGS__)
+//#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,TEXTURE_LOG_TAG,__VA_ARGS__)
 
 using namespace OpenGLUtil;
 

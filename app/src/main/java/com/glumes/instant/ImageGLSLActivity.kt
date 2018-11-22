@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import com.glumes.instantglsl.InstantRenderer
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.FileDescriptor
 
 class ImageGLSLActivity : AppCompatActivity() {
 
@@ -19,6 +20,8 @@ class ImageGLSLActivity : AppCompatActivity() {
     lateinit var mInstantRenderer: InstantRenderer
     lateinit var mContext: Context
     lateinit var mShaderReceiver: ShaderReceiver
+
+    val assetPath = "texture/texture.jpg"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,7 +50,9 @@ class ImageGLSLActivity : AppCompatActivity() {
 
 //                mInstantRenderer.shaderChange(shader)
 
-                mInstantRenderer.textureChange(path)
+
+                getFileDescriptor()
+                mInstantRenderer.textureChange(path, assetPath, assets)
 
                 mInstantRenderer.renderer()
             }
@@ -61,6 +66,17 @@ class ImageGLSLActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun getFileDescriptor() {
+//        val descriptor = assets.openFd(assetPath)
+//        val descriptor2 = descriptor.fileDescriptor
+//        val field = FileDescriptor::class.java.getDeclaredField("descriptor");
+//        field.isAccessible = true
+//
+//        val fd = field.get(descriptor2)
+//
+//        Log.d("OpenGLUtil", "fd is " + fd)
     }
 
     override fun onResume() {

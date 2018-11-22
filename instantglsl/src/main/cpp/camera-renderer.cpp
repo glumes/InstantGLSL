@@ -12,6 +12,7 @@
 #include <oes_texture_drawer.h>
 #include <texture_drawer.h>
 
+
 using namespace OpenGLUtil;
 
 EGLCore *eglCore = nullptr;
@@ -57,7 +58,6 @@ JNIEXPORT void JNICALL
 Java_com_glumes_instantglsl_CameraRenderer_draw(JNIEnv *env, jobject instance, jint textureId,
                                                 jfloatArray matrix_) {
     jfloat *matrix = env->GetFloatArrayElements(matrix_, NULL);
-
 
     oesTextureDrawer->drawFrame(textureId, matrix);
 

@@ -1,5 +1,6 @@
 package com.glumes.instantglsl;
 
+import android.content.res.AssetManager;
 import android.view.Surface;
 
 /**
@@ -19,7 +20,7 @@ public class InstantRenderer {
 
     public native void textureChange(int textureId);
 
-    public native void textureChange(String path);
+    public native void textureChange(String path, String assetPath, AssetManager assetManager);
 
     public native void reportError();
 
