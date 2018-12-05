@@ -196,11 +196,18 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChange__Ljava_lang_String_2Lj
 
 //    const char *testpath = "/data/app/com.glumes.instant-izI2rnCBtWMvHbOSBSCDKg==/base.apk/texture/texture.jpg";
 
-    unsigned char *data = stbi_load(path, &w, &h, &n, 0);
+//    unsigned char *data = stbi_load(path, &w, &h, &n, 0);
+
+
+    // read content from asset
+    unsigned char *fileData = (unsigned char *) AAsset_getBuffer(pathAsset);
+
+    //
+    unsigned char *contnet = stbi_load_from_memory(fileData, assetLength, &w, &h, &n, 0);
 
     TLOGD("w is %d,height is %d,n is %d", w, h, n);
 
-    mTextureId = loadTexture(w, h, data);
+    mTextureId = loadTexture(w, h, contnet);
 
     drawer->onTextureChange(mTextureId);
 

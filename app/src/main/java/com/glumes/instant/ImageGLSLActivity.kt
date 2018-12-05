@@ -22,6 +22,8 @@ class ImageGLSLActivity : AppCompatActivity() {
     lateinit var mShaderReceiver: ShaderReceiver
 
     val assetPath = "texture/texture.jpg"
+    val assetPath2 = "texture/logo.png"
+    val assetPath3 = "texture/android-search.png"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +42,7 @@ class ImageGLSLActivity : AppCompatActivity() {
             }
         })
 
-        val path = Environment.getExternalStorageDirectory().toString() + "/texture.jpg"
+        val path = Environment.getExternalStorageDirectory().toString() + "/logo.png"
         val shader = Environment.getExternalStorageDirectory().toString() + "/red_shader.glsl"
 
         surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
@@ -52,7 +54,7 @@ class ImageGLSLActivity : AppCompatActivity() {
 
 
                 getFileDescriptor()
-                mInstantRenderer.textureChange(path, assetPath, assets)
+                mInstantRenderer.textureChange(path, assetPath3, assets)
 
                 mInstantRenderer.renderer()
             }
