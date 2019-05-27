@@ -4,16 +4,23 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
-    compileSdkVersion 26
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
     defaultConfig {
         applicationId "com.glumes.instant"
-        minSdkVersion 22
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a" // ,'arm64-v8a','x86', 'x86_64', 'armeabi-v7a'
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -21,20 +28,25 @@ android {
         }
     }
 
+
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation deps.kotlin
+    implementation deps.appcompatv7
+    implementation deps.constraint_layout
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+
     implementation 'com.glumes:ezcamerakit:0.0.6'
+
+    testImplementation deps.junit
+    androidTestImplementation deps.test_runner
+    androidTestImplementation deps.test_espresso
 
     implementation project(':instantglsl')
 }

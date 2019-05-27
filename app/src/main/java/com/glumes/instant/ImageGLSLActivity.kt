@@ -21,9 +21,7 @@ class ImageGLSLActivity : AppCompatActivity() {
     lateinit var mContext: Context
     lateinit var mShaderReceiver: ShaderReceiver
 
-    val assetPath = "texture/texture.jpg"
-    val assetPath2 = "texture/logo.png"
-    val assetPath3 = "texture/android-search.png"
+    val assetPath3 = "texture/logo2.png"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,24 +34,14 @@ class ImageGLSLActivity : AppCompatActivity() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         }
 
-        PermissionsUtils.checkAndRequestMorePermissions(this, permisssion, 1, object : PermissionsUtils.PermissionRequestSuccessCallBack {
-            override fun onHasPermission() {
-
-            }
-        })
+        PermissionsUtils.checkAndRequestMorePermissions(this, permisssion, 1) { }
 
         val path = Environment.getExternalStorageDirectory().toString() + "/logo.png"
-        val shader = Environment.getExternalStorageDirectory().toString() + "/red_shader.glsl"
 
         surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-//                val id = TextureHelper.loadTexture(mContext, R.drawable.texture)
 
-//                mInstantRenderer.shaderChange(shader)
-
-
-                getFileDescriptor()
                 mInstantRenderer.textureChange(path, assetPath3, assets)
 
                 mInstantRenderer.renderer()
@@ -68,17 +56,6 @@ class ImageGLSLActivity : AppCompatActivity() {
             }
         })
 
-    }
-
-    private fun getFileDescriptor() {
-//        val descriptor = assets.openFd(assetPath)
-//        val descriptor2 = descriptor.fileDescriptor
-//        val field = FileDescriptor::class.java.getDeclaredField("descriptor");
-//        field.isAccessible = true
-//
-//        val fd = field.get(descriptor2)
-//
-//        Log.d("OpenGLUtil", "fd is " + fd)
     }
 
     override fun onResume() {

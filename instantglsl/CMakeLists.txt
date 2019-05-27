@@ -15,6 +15,7 @@ ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/opengl/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/filemap/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/camerahelper/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/glm)
+#ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/drawer/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/opengl/)
@@ -22,6 +23,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/filemap/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/stb/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/camerahelper/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/glm/)
+#include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng/)
 
 
 add_library( # Sets the name of the library.
@@ -72,6 +74,7 @@ target_link_libraries( # Specifies the target library.
                        filemap
                        android
                        glm_shared
+#                       png
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
@@ -83,6 +86,7 @@ target_link_libraries( # Specifies the target library.
                        drawer
                        filemap
                        android
+#                       png
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
