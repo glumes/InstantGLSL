@@ -15,7 +15,7 @@ ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/opengl/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/filemap/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/camerahelper/)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/glm)
-#ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng)
+ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/drawer/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/opengl/)
@@ -23,29 +23,28 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/filemap/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/stb/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/camerahelper/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/glm/)
-#include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng/)
+include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng/)
 
 
 add_library( # Sets the name of the library.
-             instantglsl
+        instantglsl
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             src/main/cpp/instant-renderer.cpp
-             )
-
+        # Provides a relative path to your source file(s).
+        src/main/cpp/instant-renderer.cpp
+        )
 
 add_library( # Sets the name of the library.
-             cameraglsl
+        cameraglsl
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             src/main/cpp/camera-renderer.cpp
-             )
+        # Provides a relative path to your source file(s).
+        src/main/cpp/camera-renderer.cpp
+        )
 
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -55,11 +54,11 @@ add_library( # Sets the name of the library.
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -67,26 +66,26 @@ find_library( # Sets the name of the path variable.
 
 
 target_link_libraries( # Specifies the target library.
-                       cameraglsl
-                       camerahelper
-                       opengl
-                       drawer
-                       filemap
-                       android
-                       glm_shared
-#                       png
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+        cameraglsl
+        camerahelper
+        opengl
+        drawer
+        filemap
+        android
+        glm_shared
+        png
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
 
 
 target_link_libraries( # Specifies the target library.
-                       instantglsl
-                       opengl
-                       drawer
-                       filemap
-                       android
-#                       png
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+        instantglsl
+        opengl
+        drawer
+        filemap
+        android
+        png
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
