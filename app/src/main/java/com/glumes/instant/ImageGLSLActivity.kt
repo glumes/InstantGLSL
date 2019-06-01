@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.SurfaceHolder
 import com.glumes.instantglsl.InstantRenderer
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.FileDescriptor
 
 class ImageGLSLActivity : AppCompatActivity() {
 
@@ -42,7 +41,9 @@ class ImageGLSLActivity : AppCompatActivity() {
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
-                mInstantRenderer.textureChange(path, assetPath3, assets)
+                mInstantRenderer.textureChangeFromeAsset(assetPath3,assets)
+
+//                mInstantRenderer.textureChagneFromSdcard(path)
 
                 mInstantRenderer.renderer()
             }

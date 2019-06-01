@@ -18,9 +18,9 @@ public class InstantRenderer {
 
     public native void shaderChange(String path);
 
-    public native void textureChange(int textureId);
+    public native void textureChangeFromeAsset(String assetPath,AssetManager assetManager);
 
-    public native void textureChange(String path, String assetPath, AssetManager assetManager);
+    public native void textureChagneFromSdcard(String filePath);
 
     public native void reportError();
 

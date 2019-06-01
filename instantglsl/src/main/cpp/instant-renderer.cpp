@@ -24,6 +24,7 @@
 #include <android/asset_manager_jni.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <PngHelper.h>
 
 
 using namespace std;
@@ -56,6 +57,7 @@ Java_com_glumes_instantglsl_InstantRenderer_init(JNIEnv *env, jobject, jobject s
 
     drawer = new TextureDrawer();
 
+//    pngHelper = new PngHelper();
 }
 
 
@@ -90,51 +92,6 @@ Java_com_glumes_instantglsl_InstantRenderer_shaderChange(JNIEnv *env, jobject, j
     env->ReleaseStringUTFChars(jpath, path);
 }
 
-JNIEXPORT void JNICALL
-Java_com_glumes_instantglsl_InstantRenderer_textureChange__I(JNIEnv *, jobject, jint texture) {
-    mTextureId = texture;
-    drawer->onTextureChange(mTextureId);
-
-}
-
-JNIEXPORT void JNICALL
-Java_com_glumes_instantglsl_InstantRenderer_textureChange__Ljava_lang_String_2(JNIEnv *env, jobject,
-                                                                               jstring jpath,
-                                                                               jstring jassetpath,
-                                                                               jobject assetManager) {
-    const char *path = env->GetStringUTFChars(jpath, 0);
-
-
-    const char *asset_path = env->GetStringUTFChars(jassetpath, 0);
-
-
-    AAssetManager *mgr = AAssetManager_fromJava(env, assetManager);
-
-    AAsset *pathAsset = AAssetManager_open(mgr, path, AASSET_MODE_UNKNOWN);
-
-    off_t assetLength = AAsset_getLength(pathAsset);
-
-    off_t start = 0;
-
-
-    int fd = AAsset_openFileDescriptor(pathAsset, &start, &assetLength);
-
-
-    int w, h, n;
-
-
-    TLOGD("texture path is %s", path);
-
-    unsigned char *data = stbi_load(path, &w, &h, &n, 0);
-
-    TLOGD("w is %d,height is %d,n is %d", w, h, n);
-
-    mTextureId = loadTexture(w, h, data);
-
-    drawer->onTextureChange(mTextureId);
-
-    env->ReleaseStringUTFChars(jpath, path);
-}
 
 JNIEXPORT void JNICALL
 Java_com_glumes_instantglsl_InstantRenderer_reportError(JNIEnv *, jobject) {
@@ -152,18 +109,16 @@ Java_com_glumes_instantglsl_InstantRenderer_destroy(JNIEnv *, jobject) {
 //    delete drawer;
 }
 
+
 }
 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_glumes_instantglsl_InstantRenderer_textureChange__Ljava_lang_String_2Ljava_lang_String_2Landroid_content_res_AssetManager_2(
-        JNIEnv *env, jobject instance, jstring path_, jstring assetPath_, jobject assetManager) {
-
-
-    const char *path = env->GetStringUTFChars(path_, 0);
+Java_com_glumes_instantglsl_InstantRenderer_textureChangeFromeAsset(JNIEnv *env, jobject instance,
+                                                                    jstring assetPath_,
+                                                                    jobject assetManager) {
     const char *assetPath = env->GetStringUTFChars(assetPath_, 0);
-
 
     AAssetManager *mgr = AAssetManager_fromJava(env, assetManager);
 
@@ -171,46 +126,41 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChange__Ljava_lang_String_2Lj
 
     off_t assetLength = AAsset_getLength(pathAsset);
 
-    off_t start = 0;
-
-    int fd = AAsset_openFileDescriptor(pathAsset, &start, &assetLength);
-
-    TLOGD("path is %d", fd);
-
-    char filename[1024] = "temp";
-
-    char buf[1024];
-
-    snprintf(filename, 1024, "/proc/%ld/fd/%d", (long) getpid(), fd);
-
-    TLOGD("file descriptor path  file name is %s", filename);
-
-    readlink(filename, buf, 1024);
-
-    TLOGD("file descriptor path is %s", buf);
-
+    unsigned char *fileData = (unsigned char *) AAsset_getBuffer(pathAsset);
 
     int w, h, n;
 
-    TLOGD("texture path is %s", path);
+    unsigned char *content = stbi_load_from_memory(fileData, assetLength, &w, &h, &n, 0);
 
-//    const char *testpath = "/data/app/com.glumes.instant-izI2rnCBtWMvHbOSBSCDKg==/base.apk/texture/texture.jpg";
-
-//    unsigned char *data = stbi_load(path, &w, &h, &n, 0);
-
-
-    // read content from asset
-    unsigned char *fileData = (unsigned char *) AAsset_getBuffer(pathAsset);
-
-    //
-    unsigned char *contnet = stbi_load_from_memory(fileData, assetLength, &w, &h, &n, 0);
-
-    TLOGD("w is %d,height is %d,n is %d", w, h, n);
-
-    mTextureId = loadTexture(w, h, contnet);
+    mTextureId = loadTexture(w, h, content);
 
     drawer->onTextureChange(mTextureId);
 
-    env->ReleaseStringUTFChars(path_, path);
     env->ReleaseStringUTFChars(assetPath_, assetPath);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env, jobject instance,
+                                                                    jstring filePath_) {
+    const char *filePath = env->GetStringUTFChars(filePath_, 0);
+
+    TLOGD("path is %s",filePath);
+
+    int w, h, n;
+
+
+    unsigned char *content = stbi_load(filePath, &w, &h, &n, 0);
+
+
+    PngHelper helper(filePath);
+
+    TLOGD("png width is %d height is %d and alpha is %d",helper.getWidth(),helper.getHeight(),helper.has_alpha());
+
+
+    mTextureId = loadTexture(w, h, helper.getData());
+
+    drawer->onTextureChange(mTextureId);
+
+    env->ReleaseStringUTFChars(filePath_, filePath);
 }

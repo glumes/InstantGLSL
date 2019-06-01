@@ -16,6 +16,15 @@
 #  include <errno.h>
 #endif /* SIMPLIFIED_WRITE_STDIO */
 
+#include <android/log.h>
+
+#define LOG_TAG ("OpenGLUtil")
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
+#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+
+
 #ifdef PNG_WRITE_SUPPORTED
 
 #ifdef PNG_WRITE_UNKNOWN_CHUNKS_SUPPORTED
@@ -995,11 +1004,14 @@ png_destroy_write_struct(png_structpp png_ptr_ptr, png_infopp info_ptr_ptr)
    }
 }
 
+
+
 /* Allow the application to select one or more row filters to use. */
 void PNGAPI
 png_set_filter(png_structrp png_ptr, int method, int filters)
 {
    png_debug(1, "in png_set_filter");
+    LOGD("png_set_filter");
 
    if (png_ptr == NULL)
       return;
