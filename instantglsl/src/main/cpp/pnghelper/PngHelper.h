@@ -16,9 +16,10 @@ class PngHelper {
 private:
     const string file_name;
     unsigned char *data;
-    unsigned int width, height;
+    int width, height;
     int bit_depth, color_type, interlace_type;
     int compression_type, filter_method;
+    png_bytep *row_pointers;
 
 public:
 
@@ -34,6 +35,9 @@ public:
 
     unsigned char *getData();
 
+    void read_png_file(char *filename);
+    void write_png_file(char *filename);
+    void process_png_file();
 };
 
 

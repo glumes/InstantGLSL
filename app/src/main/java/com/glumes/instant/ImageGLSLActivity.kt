@@ -41,9 +41,9 @@ class ImageGLSLActivity : AppCompatActivity() {
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
-                mInstantRenderer.textureChangeFromeAsset(assetPath3,assets)
+//                mInstantRenderer.textureChangeFromeAsset(assetPath3,assets)
 
-//                mInstantRenderer.textureChagneFromSdcard(path)
+                mInstantRenderer.textureChagneFromSdcard(path)
 
                 mInstantRenderer.renderer()
             }

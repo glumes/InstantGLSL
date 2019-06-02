@@ -152,15 +152,22 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
 
     unsigned char *content = stbi_load(filePath, &w, &h, &n, 0);
 
-
+//
     PngHelper helper(filePath);
 
     TLOGD("png width is %d height is %d and alpha is %d",helper.getWidth(),helper.getHeight(),helper.has_alpha());
 
+    helper.read_png_file(const_cast<char *>(filePath));
 
-    mTextureId = loadTexture(w, h, helper.getData());
+    helper.process_png_file();
 
-    drawer->onTextureChange(mTextureId);
+    helper.write_png_file("/storage/emulated/0/logo22.png");
+
+//    mTextureId = loadTexture(w, h, helper.getData());
+
+    TLOGD("on texturechange");
+
+//    drawer->onTextureChange(mTextureId);
 
     env->ReleaseStringUTFChars(filePath_, filePath);
 }
