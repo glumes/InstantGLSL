@@ -44,7 +44,7 @@
  */
 #ifndef PNG_ARM_NEON_FILE
 #  ifdef __linux__
-#     define PNG_ARM_NEON_FILE "/Users/glumes/Github/instantglsl/instantglsl/src/main/cpp/libpng/contrib/arm-neon/android-ndk.c"
+#     define PNG_ARM_NEON_FILE "/Users/glumes/graphicscode/InstantGLSL/instantglsl/src/main/cpp/libpng/contrib/arm-neon/android-ndk.c"
 #  endif
 #endif
 
@@ -93,11 +93,15 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
          {
             static volatile sig_atomic_t no_neon = -1; /* not checked */
 
-            if (no_neon < 0)
-               no_neon = !png_have_neon(pp);
+            if (no_neon < 0){
+                LOGD("no_neon < 0");
+                no_neon = !png_have_neon(pp);
+            }
 
-            if (no_neon)
-               return;
+            if (no_neon){
+                LOGD("no neon");
+                return;
+            }
          }
 #ifdef PNG_ARM_NEON_API_SUPPORTED
          break;
@@ -129,6 +133,7 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
 
    if (bpp == 3)
    {
+       LOGD("BPP = 3");
       pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub3_neon;
       pp->read_filter[PNG_FILTER_VALUE_AVG-1] = png_read_filter_row_avg3_neon;
       pp->read_filter[PNG_FILTER_VALUE_PAETH-1] =
@@ -137,7 +142,8 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
 
    else if (bpp == 4)
    {
-      pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub4_neon;
+       LOGD("BPP = 4");
+       pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub4_neon;
       pp->read_filter[PNG_FILTER_VALUE_AVG-1] = png_read_filter_row_avg4_neon;
       pp->read_filter[PNG_FILTER_VALUE_PAETH-1] =
           png_read_filter_row_paeth4_neon;

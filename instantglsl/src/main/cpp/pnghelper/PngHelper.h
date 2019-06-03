@@ -8,6 +8,7 @@
 #include <png.h>
 #include <pngconf.h>
 #include <string>
+#include <pngpriv.h>
 
 using namespace std;
 

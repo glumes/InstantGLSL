@@ -35,7 +35,7 @@ class ImageGLSLActivity : AppCompatActivity() {
 
         PermissionsUtils.checkAndRequestMorePermissions(this, permisssion, 1) { }
 
-        val path = Environment.getExternalStorageDirectory().toString() + "/logo.png"
+        val path = Environment.getExternalStorageDirectory().toString() + "/gray-16-sRGB.png"
 
         surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
 

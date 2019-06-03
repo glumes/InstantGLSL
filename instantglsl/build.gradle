@@ -16,7 +16,7 @@ android {
                 cppFlags "-std=c++11 -frtti -fexceptions"
 //                arguments  "-DANDROID_STL=stlport_static"
                 arguments "-DANDROID_PLATFORM=22"
-//                "-DANDROID_ARM_NEON=true"
+                "-DANDROID_ARM_NEON=true"
             }
         }
 

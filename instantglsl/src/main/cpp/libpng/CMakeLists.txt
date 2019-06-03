@@ -22,7 +22,7 @@ cmake_minimum_required(VERSION 3.1)
 cmake_policy(VERSION 3.1)
 
 project(libpng C)
-enable_testing()
+
 
 add_library(cpufeatures STATIC
         ${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
@@ -63,11 +63,13 @@ if (PNG_HARDWARE_OPTIMIZATIONS)
                     arm/filter_neon_intrinsics.c
                     arm/palette_neon_intrinsics.c)
 
-            if (${PNG_ARM_NEON} STREQUAL "on")
+#            if (${PNG_ARM_NEON} STREQUAL "on")
+                message("PNG_ARM_NEON is on")
                 add_definitions(-DPNG_ARM_NEON_OPT=2)
-            elseif (${PNG_ARM_NEON} STREQUAL "check")
-                add_definitions(-DPNG_ARM_NEON_CHECK_SUPPORTED)
-            endif ()
+#            elseif (${PNG_ARM_NEON} STREQUAL "check")
+#                message("DPNG_ARM_NEON_CHECK_SUPPORTED is on")
+#                add_definitions(-DPNG_ARM_NEON_CHECK_SUPPORTED)
+#            endif ()
         else ()
             add_definitions(-DPNG_ARM_NEON_OPT=0)
         endif ()
@@ -83,7 +85,7 @@ else (PNG_HARDWARE_OPTIMIZATIONS)
 
 
 endif (PNG_HARDWARE_OPTIMIZATIONS)
-#
+
 set_property(SOURCE ${libpng_arm_sources}
         APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
 

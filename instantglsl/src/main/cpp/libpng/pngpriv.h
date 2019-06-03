@@ -2084,6 +2084,9 @@ PNG_INTERNAL_FUNCTION(void, png_image_free, (png_imagep image), PNG_EMPTY);
 
 #endif /* SIMPLIFIED READ/WRITE */
 
+PNG_INTERNAL_FUNCTION(void, png_init_filter_functions_neon,
+                      (png_structp png_ptr, unsigned int bpp), PNG_EMPTY);
+
 /* These are initialization functions for hardware specific PNG filter
  * optimizations; list these here then select the appropriate one at compile
  * time using the macro PNG_FILTER_OPTIMIZATIONS.  If the macro is not defined

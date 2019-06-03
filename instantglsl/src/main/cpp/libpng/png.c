@@ -13,6 +13,16 @@
 
 #include "pngpriv.h"
 
+#include <android/log.h>
+
+#define LOG_TAG ("neonUtil")
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
+#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+
+
+
 /* Generate a compiler error if there is an old png.h in the search path. */
 typedef png_libpng_version_1_6_37 Your_png_h_is_not_version_1_6_37;
 
@@ -706,6 +716,13 @@ png_init_io(png_structrp png_ptr, png_FILE_p fp)
 
    if (png_ptr == NULL)
       return;
+
+#if PNG_ARM_NEON_OPT > 0
+   LOGD("PNG_ARM_NEON_OPT");
+#else
+   LOGD("else PNG_ARM_NEON_OPT");
+#endif
+
 
    png_ptr->io_ptr = (png_voidp)fp;
 }

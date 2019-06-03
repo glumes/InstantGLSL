@@ -5,6 +5,7 @@
 #include "PngHelper.h"
 
 #include <android/log.h>
+#include <pngpriv.h>
 
 #define LOG_TAG ("OpenGLUtil")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
@@ -152,6 +153,14 @@ void PngHelper::read_png_file(char *filename) {
         LOGD("SET no filter");
         png_set_filler(png, 0x00, PNG_FILLER_AFTER);
     }
+
+//    png_init_filter_functions(png);
+
+//    png_destroy_png_struct(png);
+
+    png_init_filter_functions_neon(png,3);
+
+//    png_read_filter_row(png,info,)
 
     if (color_type == PNG_COLOR_TYPE_GRAY ||
         color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
