@@ -24,6 +24,9 @@ cmake_policy(VERSION 3.1)
 project(libpng C)
 enable_testing()
 
+add_library(cpufeatures STATIC
+        ${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
+
 set(PNGLIB_MAJOR 1)
 set(PNGLIB_MINOR 6)
 set(PNGLIB_RELEASE 37)
@@ -81,8 +84,8 @@ else (PNG_HARDWARE_OPTIMIZATIONS)
 
 endif (PNG_HARDWARE_OPTIMIZATIONS)
 #
-#set_property(SOURCE ${libpng_arm_sources}
-#        APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
+set_property(SOURCE ${libpng_arm_sources}
+        APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
 
 
 # SET LIBNAME
@@ -133,12 +136,23 @@ set(libpng_sources
         ${libpng_arm_sources}
         )
 
+find_library( # Sets the name of the path variable.
+        log-lib
+
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
+
+
+
 if (PNG_SHARED)
     message("build png shared library")
     add_library(png SHARED ${libpng_sources})
     add_dependencies(png genfiles)
 #    set_target_properties(png PROPERTIES OUTPUT_NAME ${PNG_LIB_NAME})
-    target_link_libraries(png z)
+    target_link_libraries(png z log cpufeatures)
+    target_include_directories(png PRIVATE
+            ${ANDROID_NDK}/sources/android/cpufeatures)
 endif ()
 
 if (PNG_STATIC)

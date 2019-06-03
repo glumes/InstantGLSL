@@ -25,6 +25,13 @@
  * only the header files exist in the NDK.
  */
 #include <cpu-features.h>
+#include <android/log.h>
+
+#define LOG_TAG ("neonUtil")
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
+#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
 
 static int
 png_have_neon(png_structp png_ptr)
@@ -33,6 +40,7 @@ png_have_neon(png_structp png_ptr)
     * implemented as below, therefore it is better to cache the result (these
     * function calls may be slow!)
     */
+   LOGD("png_have_neon");
    PNG_UNUSED(png_ptr)
    return android_getCpuFamily() == ANDROID_CPU_FAMILY_ARM &&
       (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0;

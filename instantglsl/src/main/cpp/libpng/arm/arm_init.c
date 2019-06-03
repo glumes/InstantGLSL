@@ -17,6 +17,15 @@
 
 #include "../pngpriv.h"
 
+#include <android/log.h>
+
+#define LOG_TAG ("neonUtil")
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
+#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+
+
 #ifdef PNG_READ_SUPPORTED
 
 #if PNG_ARM_NEON_OPT > 0
@@ -35,7 +44,7 @@
  */
 #ifndef PNG_ARM_NEON_FILE
 #  ifdef __linux__
-#     define PNG_ARM_NEON_FILE "/Users/glumes/Github/instantglsl/instantglsl/src/main/cpp/libpng/contrib/arm-neon/linux.c"
+#     define PNG_ARM_NEON_FILE "/Users/glumes/Github/instantglsl/instantglsl/src/main/cpp/libpng/contrib/arm-neon/android-ndk.c"
 #  endif
 #endif
 
@@ -67,6 +76,8 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
     * wrong order of the 'ON' and 'default' cases.  UNSET now defaults to OFF,
     * as documented in png.h
     */
+   LOGD("png_init_filter_functions_neon");
+
    png_debug(1, "in png_init_filter_functions_neon");
 #ifdef PNG_ARM_NEON_API_SUPPORTED
    switch ((pp->options >> PNG_ARM_NEON) & 3)
