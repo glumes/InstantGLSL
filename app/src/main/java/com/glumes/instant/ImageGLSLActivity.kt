@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class ImageGLSLActivity : AppCompatActivity() {
 
-
     lateinit var mInstantRenderer: InstantRenderer
     lateinit var mContext: Context
     lateinit var mShaderReceiver: ShaderReceiver
@@ -35,15 +34,11 @@ class ImageGLSLActivity : AppCompatActivity() {
 
         PermissionsUtils.checkAndRequestMorePermissions(this, permisssion, 1) { }
 
-        val path = Environment.getExternalStorageDirectory().toString() + "/gray-16-sRGB.png"
-
         surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
-//                mInstantRenderer.textureChangeFromeAsset(assetPath3,assets)
-
-                mInstantRenderer.textureChagneFromSdcard(path)
+                mInstantRenderer.textureChangeFromeAsset(assetPath3, assets)
 
                 mInstantRenderer.renderer()
             }
@@ -75,9 +70,7 @@ class ImageGLSLActivity : AppCompatActivity() {
     inner class ShaderReceiver : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent) {
-            Log.d("ShaderReceiver", "ShaderReceiver onReceive")
             val path = Environment.getExternalStorageDirectory().toString() + "/" + intent.getStringExtra("shaderPath")
-            Log.d("ShaderReceiver", path)
             mInstantRenderer.shaderChange(path)
             mInstantRenderer.renderer()
         }
