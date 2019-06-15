@@ -15,16 +15,33 @@ using namespace std;
 class PngHelper {
 
 private:
-    const string file_name;
-    unsigned char *data;
-    int width, height;
-    int bit_depth, color_type, interlace_type;
-    int compression_type, filter_method;
+    const string mFileName;
+    unsigned char *mPixelData;
+    int mWidth, mHeight;
+    int mBitDepth, mColorType, mInterlaceType;
+    int mCompressionType, mFilterType;
     png_bytep *row_pointers;
 
 public:
 
-    PngHelper(const string &file_name);
+    PngHelper() = default;
+
+    PngHelper(const string &file_name) :
+            mFileName(file_name),
+            mPixelData(nullptr),
+            mWidth(0), mHeight(0),
+            mBitDepth(0), mColorType(0),
+            mInterlaceType(0),
+            mCompressionType(0),
+            mFilterType(0){
+
+//        FILE *fp = fopen(mFileName.c_str(), "rb");
+//        if (fp == nullptr){
+//            fclose(fp);
+//            return ;
+//        }
+
+    };
 
     ~PngHelper();
 
@@ -34,10 +51,12 @@ public:
 
     bool has_alpha();
 
-    unsigned char *getData();
+    unsigned char *getPixelData();
 
     void read_png_file(char *filename);
+
     void write_png_file(char *filename);
+
     void process_png_file();
 };
 

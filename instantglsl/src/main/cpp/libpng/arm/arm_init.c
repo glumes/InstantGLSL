@@ -17,15 +17,6 @@
 
 #include "../pngpriv.h"
 
-#include <android/log.h>
-
-#define LOG_TAG ("neonUtil")
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__))
-#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
-#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
-
-
 #ifdef PNG_READ_SUPPORTED
 
 #if PNG_ARM_NEON_OPT > 0
@@ -44,7 +35,7 @@
  */
 #ifndef PNG_ARM_NEON_FILE
 #  ifdef __linux__
-#     define PNG_ARM_NEON_FILE "/Users/glumes/graphicscode/InstantGLSL/instantglsl/src/main/cpp/libpng/contrib/arm-neon/android-ndk.c"
+#     define PNG_ARM_NEON_FILE "contrib/arm-neon/linux.c"
 #  endif
 #endif
 
@@ -76,8 +67,6 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
     * wrong order of the 'ON' and 'default' cases.  UNSET now defaults to OFF,
     * as documented in png.h
     */
-   LOGD("png_init_filter_functions_neon");
-
    png_debug(1, "in png_init_filter_functions_neon");
 #ifdef PNG_ARM_NEON_API_SUPPORTED
    switch ((pp->options >> PNG_ARM_NEON) & 3)
@@ -93,15 +82,11 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
          {
             static volatile sig_atomic_t no_neon = -1; /* not checked */
 
-            if (no_neon < 0){
-                LOGD("no_neon < 0");
-                no_neon = !png_have_neon(pp);
-            }
+            if (no_neon < 0)
+               no_neon = !png_have_neon(pp);
 
-            if (no_neon){
-                LOGD("no neon");
-                return;
-            }
+            if (no_neon)
+               return;
          }
 #ifdef PNG_ARM_NEON_API_SUPPORTED
          break;
@@ -133,7 +118,6 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
 
    if (bpp == 3)
    {
-       LOGD("BPP = 3");
       pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub3_neon;
       pp->read_filter[PNG_FILTER_VALUE_AVG-1] = png_read_filter_row_avg3_neon;
       pp->read_filter[PNG_FILTER_VALUE_PAETH-1] =
@@ -142,8 +126,7 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
 
    else if (bpp == 4)
    {
-       LOGD("BPP = 4");
-       pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub4_neon;
+      pp->read_filter[PNG_FILTER_VALUE_SUB-1] = png_read_filter_row_sub4_neon;
       pp->read_filter[PNG_FILTER_VALUE_AVG-1] = png_read_filter_row_avg4_neon;
       pp->read_filter[PNG_FILTER_VALUE_PAETH-1] =
           png_read_filter_row_paeth4_neon;
