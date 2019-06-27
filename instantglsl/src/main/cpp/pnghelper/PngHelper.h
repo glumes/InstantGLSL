@@ -26,22 +26,7 @@ public:
 
     PngHelper() = default;
 
-    PngHelper(const string &file_name) :
-            mFileName(file_name),
-            mPixelData(nullptr),
-            mWidth(0), mHeight(0),
-            mBitDepth(0), mColorType(0),
-            mInterlaceType(0),
-            mCompressionType(0),
-            mFilterType(0){
-
-//        FILE *fp = fopen(mFileName.c_str(), "rb");
-//        if (fp == nullptr){
-//            fclose(fp);
-//            return ;
-//        }
-
-    };
+    PngHelper(const string &file_name);
 
     ~PngHelper();
 
