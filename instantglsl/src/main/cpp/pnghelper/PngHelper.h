@@ -17,7 +17,7 @@ class PngHelper {
 private:
     const string mFileName;
     unsigned char *mPixelData;
-    int mWidth, mHeight;
+    png_uint_32 mWidth, mHeight;
     int mBitDepth, mColorType, mInterlaceType;
     int mCompressionType, mFilterType;
     png_bytep *row_pointers;
