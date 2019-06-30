@@ -22,6 +22,7 @@ private:
     int mCompressionType, mFilterType;
     png_bytep *row_pointers;
 
+    bool check_if_png(FILE *fp);
 public:
 
     PngHelper() = default;

@@ -13,6 +13,7 @@
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN,  LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
 
+#define PNG_BYTES_TO_CHECK 4
 
 PngHelper::PngHelper(const string &file_name) :
         mFileName(file_name),
@@ -42,33 +43,62 @@ PngHelper::PngHelper(const string &file_name) :
         return;
     }
 
-    if (setjmp(png_jmpbuf(png))) {
-        png_destroy_read_struct(&png, nullptr, nullptr);
-        fclose(fp);
+
+    png_init_io(png, fp);
+
+    // 检查文件是否 png 格式
+    char buf[PNG_BYTES_TO_CHECK];
+
+    if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
         return;
     }
 
-    png_init_io(png, fp);
-    unsigned int sig_bytes = 0;
+    if (!png_sig_cmp(reinterpret_cast<png_const_bytep>(buf), 0, PNG_BYTES_TO_CHECK)) {
+        LOGD("is png");
+    } else {
+        LOGD("is not png");
+    };
 
-    png_set_sig_bytes(png, sig_bytes);
+    // 如果不执行这句就复位文件指针，否则会出现黑屏
+    // rewind(fp);
+    png_set_sig_bytes(png, PNG_BYTES_TO_CHECK);
+
 
     png_read_png(png, infop,
                  (PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND),
                  nullptr);
+
+    infop->row_pointers;
+    mWidth = png_get_image_width(png, infop);
+    mHeight = png_get_image_height(png, infop);
+    mColorType = png_get_color_type(png, infop);
+    mBitDepth = png_get_bit_depth(png, infop);
+
+    LOGD("width is %d,height is %d colortype is %d bitdepth is %d", mWidth, mHeight, mColorType,
+         mBitDepth);
+
+
     png_get_IHDR(png, infop, &mWidth, &mHeight, &mBitDepth, &mColorType, &mInterlaceType,
                  &mCompressionType, &mFilterType);
 
-    unsigned int row_bytes = png_get_rowbytes(png, infop);
-    if (mPixelData != nullptr) {
-        delete[] mPixelData;
-        mPixelData = nullptr;
+//    unsigned int row_bytes = png_get_rowbytes(png, infop);
+//    if (mPixelData != nullptr) {
+//        delete[] mPixelData;
+//        mPixelData = nullptr;
+//    }
+//    mPixelData = new unsigned char[row_bytes * mHeight];
+//    png_bytepp rows = png_get_rows(png, infop);
+//    for (int i = 0; i < mHeight; ++i) {
+//        memcpy(mPixelData + (row_bytes * i), rows[i], row_bytes);
+//    }
+
+    row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * mHeight);
+    for (int y = 0; y < mHeight; y++) {
+        row_pointers[y] = (png_byte *) malloc(png_get_rowbytes(png, infop));
     }
-    mPixelData = new unsigned char[row_bytes * mHeight];
-    png_bytepp rows = png_get_rows(png, infop);
-    for (int i = 0; i < mHeight; ++i) {
-        memcpy(mPixelData + (row_bytes * i), rows[i], row_bytes);
-    }
+
+    png_read_image(png, row_pointers);
+
     png_destroy_read_struct(&png, &infop, nullptr);
 };
 
@@ -174,7 +204,11 @@ void PngHelper::write_png_file(char *filename) {
     png_infop info = png_create_info_struct(png);
     if (!info) abort();
 
-    if (setjmp(png_jmpbuf(png))) abort();
+    if (setjmp(png_jmpbuf(png))){
+        // 做一些清理工作
+        LOGD("error happen");
+        abort();
+    }
 
     png_init_io(png, fp);
 
@@ -215,5 +249,13 @@ void PngHelper::process_png_file() {
             //printf("%4d, %4d = RGBA(%3d, %3d, %3d, %3d)\n", x, y, px[0], px[1], px[2], px[3]);
         }
     }
+}
+
+bool PngHelper::check_if_png(FILE *fp) {
+    char buf[PNG_BYTES_TO_CHECK];
+    if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
+        return false;
+    }
+    return png_sig_cmp(reinterpret_cast<png_const_bytep>(buf), 0, PNG_BYTES_TO_CHECK);
 }
 

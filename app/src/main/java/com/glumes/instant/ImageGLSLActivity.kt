@@ -11,6 +11,7 @@ import android.os.Environment
 import android.view.SurfaceHolder
 import com.glumes.instantglsl.InstantRenderer
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class ImageGLSLActivity : AppCompatActivity() {
 
@@ -19,6 +20,7 @@ class ImageGLSLActivity : AppCompatActivity() {
     lateinit var mShaderReceiver: ShaderReceiver
 
     val assetPath3 = "texture/logo2.png"
+    var sdPath = Environment.getExternalStorageDirectory().toString() + File.separator + "logo.png"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,7 +39,8 @@ class ImageGLSLActivity : AppCompatActivity() {
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
-                mInstantRenderer.textureChangeFromeAsset(assetPath3, assets)
+//                mInstantRenderer.textureChangeFromeAsset(assetPath3, assets)
+                mInstantRenderer.textureChagneFromSdcard(sdPath)
 
                 mInstantRenderer.renderer()
             }
