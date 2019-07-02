@@ -39,7 +39,7 @@ class InstantApp : Application() {
                 val fos = FileOutputStream(file)
                 val buffer = ByteArray(1024)
                 var byteCount = 0
-                while (inputStream.read().apply { byteCount = this } != -1) {
+                while (inputStream.read().also { byteCount = it } != -1) {
                     fos.write(buffer, 0, byteCount)
                 }
                 fos.flush()
