@@ -80,7 +80,7 @@ set_target_properties(libturbojpeg PROPERTIES IMPORTED_LOCATION
         ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a/libturbojpeg.so)
 
 add_library(libjpeg SHARED IMPORTED)
-set_target_properties(libturbojpeg PROPERTIES IMPORTED_LOCATION
+set_target_properties(libjpeg PROPERTIES IMPORTED_LOCATION
         ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a/libjpeg.so)
 
 
