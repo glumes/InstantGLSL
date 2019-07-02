@@ -1,7 +1,8 @@
-package com.glumes.instant
+package com.glumes.instant.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.glumes.instant.R
 
 class IntroduceActivity : AppCompatActivity() {
 

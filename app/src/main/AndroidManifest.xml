@@ -16,8 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.DemoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
-            android:name=".ImageGLSLActivity"
+            android:name=".activity.ImageGLSLActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,14 +35,9 @@
         </activity>
 
         <activity
-            android:name=".CameraGLSLActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-
-        <activity android:name=".IntroduceActivity">
-
-        </activity>
+            android:name=".activity.CameraGLSLActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.IntroduceActivity"></activity>
     </application>
 
 </manifest>

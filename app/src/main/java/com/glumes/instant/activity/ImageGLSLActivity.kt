@@ -1,4 +1,4 @@
-package com.glumes.instant
+package com.glumes.instant.activity
 
 import android.Manifest
 import android.content.BroadcastReceiver
@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.SurfaceHolder
+import com.glumes.instant.R
+import com.glumes.instant.utils.IMAGE_ACTION
+import com.glumes.instant.utils.PermissionsUtils
 import com.glumes.instantglsl.InstantRenderer
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File

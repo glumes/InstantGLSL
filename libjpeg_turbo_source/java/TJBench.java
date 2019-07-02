@@ -288,7 +288,7 @@ final class TJBench {
     tempStr = new String(tempStr.substring(0, ndx) + "-err.bmp");
     if (srcBuf != null && sf.getNum() == 1 && sf.getDenom() == 1) {
       if (quiet == 0)
-        System.out.println("Compression error written to " + tempStr + ".");
+        System.out.println("Compression error written to " + tempStr + "");
       if (subsamp == TJ.SAMP_GRAY) {
         for (int y = 0, index = 0; y < h; y++, index += pitch) {
           for (int x = 0, index2 = index; x < w; x++, index2 += ps) {

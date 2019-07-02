@@ -363,7 +363,7 @@ macro(GNUInstallDirs_get_absolute_install_dir absvar var)
     # - CMAKE_INSTALL_PREFIX == /
     # - CMAKE_INSTALL_PREFIX == /usr
     # - CMAKE_INSTALL_PREFIX == /opt/...
-    if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/")
+    if("${CMAKE_INSTALL_PREFIX}" STREQUAL ".")
       if("${dir}" STREQUAL "SYSCONFDIR" OR "${dir}" STREQUAL "LOCALSTATEDIR")
         set(${absvar} "/${${var}}")
       else()

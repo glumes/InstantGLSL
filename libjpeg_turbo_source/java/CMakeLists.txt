@@ -16,17 +16,17 @@ set(JAVAARGS "" CACHE STRING "Additional arguments to pass to java when running 
 message(STATUS "JAVAARGS = ${JAVAARGS}")
 
 set(JAVA_SOURCES org/libjpegturbo/turbojpeg/TJ.java
-  org/libjpegturbo/turbojpeg/TJCompressor.java
-  org/libjpegturbo/turbojpeg/TJCustomFilter.java
-  org/libjpegturbo/turbojpeg/TJDecompressor.java
-  org/libjpegturbo/turbojpeg/TJException.java
-  org/libjpegturbo/turbojpeg/TJScalingFactor.java
-  org/libjpegturbo/turbojpeg/TJTransform.java
-  org/libjpegturbo/turbojpeg/TJTransformer.java
-  org/libjpegturbo/turbojpeg/YUVImage.java
-  TJUnitTest.java
-  TJExample.java
-  TJBench.java)
+        org/libjpegturbo/turbojpeg/TJCompressor.java
+        org/libjpegturbo/turbojpeg/TJCustomFilter.java
+        org/libjpegturbo/turbojpeg/TJDecompressor.java
+        org/libjpegturbo/turbojpeg/TJException.java
+        org/libjpegturbo/turbojpeg/TJScalingFactor.java
+        org/libjpegturbo/turbojpeg/TJTransform.java
+        org/libjpegturbo/turbojpeg/TJTransformer.java
+        org/libjpegturbo/turbojpeg/YUVImage.java
+        TJUnitTest.java
+        TJExample.java
+        TJBench.java)
 
 set(TURBOJPEG_DLL_NAME "turbojpeg")
 if(MINGW)
@@ -56,22 +56,22 @@ if(MSYS)
 endif()
 
 add_custom_target(javadoc COMMAND
-  javadoc -notimestamp -d ${CMAKE_CURRENT_SOURCE_DIR}/doc -sourcepath ${CMAKE_CURRENT_SOURCE_DIR} org.libjpegturbo.turbojpeg)
+  javadoc -notimestamp -d doc -sourcepath . org.libjpegturbo.turbojpeg)
 set(JAVACLASSPATH ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/turbojpeg-java.dir)
 if(Java_VERSION_MAJOR GREATER 9)
   add_custom_target(javah
-    COMMAND javac -h ${CMAKE_CURRENT_SOURCE_DIR} -classpath ${JAVACLASSPATH}
+    COMMAND javac -h . -classpath ${JAVACLASSPATH}
       -d ${CMAKE_CURRENT_BINARY_DIR}/__unused
-      ${CMAKE_CURRENT_SOURCE_DIR}/org/libjpegturbo/turbojpeg/TJ.java
-      ${CMAKE_CURRENT_SOURCE_DIR}/org/libjpegturbo/turbojpeg/TJCompressor.java
-      ${CMAKE_CURRENT_SOURCE_DIR}/org/libjpegturbo/turbojpeg/TJDecompressor.java
-      ${CMAKE_CURRENT_SOURCE_DIR}/org/libjpegturbo/turbojpeg/TJTransformer.java)
+          org/libjpegturbo/turbojpeg/TJ.java
+          org/libjpegturbo/turbojpeg/TJCompressor.java
+          org/libjpegturbo/turbojpeg/TJDecompressor.java
+          org/libjpegturbo/turbojpeg/TJTransformer.java)
 else()
   add_custom_target(javah
-    COMMAND javah -d ${CMAKE_CURRENT_SOURCE_DIR} -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJ
-    COMMAND javah -d ${CMAKE_CURRENT_SOURCE_DIR} -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJCompressor
-    COMMAND javah -d ${CMAKE_CURRENT_SOURCE_DIR} -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJDecompressor
-    COMMAND javah -d ${CMAKE_CURRENT_SOURCE_DIR} -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJTransformer)
+    COMMAND javah -d . -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJ
+    COMMAND javah -d . -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJCompressor
+    COMMAND javah -d . -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJDecompressor
+    COMMAND javah -d . -classpath ${JAVACLASSPATH} org.libjpegturbo.turbojpeg.TJTransformer)
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_DEFAULT_JAVADIR)

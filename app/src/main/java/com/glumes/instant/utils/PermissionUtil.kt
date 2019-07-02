@@ -1,4 +1,4 @@
-package com.glumes.instant
+package com.glumes.instant.utils
 
 import android.app.Activity
 import android.content.Context

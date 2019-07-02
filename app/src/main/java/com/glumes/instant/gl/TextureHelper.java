@@ -1,4 +1,4 @@
-package com.glumes.instant;
+package com.glumes.instant.gl;
 
 import android.content.Context;
 import android.graphics.Bitmap;

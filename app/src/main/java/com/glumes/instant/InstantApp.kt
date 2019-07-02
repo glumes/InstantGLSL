@@ -2,8 +2,8 @@ package com.glumes.instant
 
 import android.app.Application
 import android.os.Environment
+import com.glumes.instant.utils.LogUtil
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
@@ -27,7 +27,7 @@ class InstantApp : Application() {
         LogUtil.d("copy Assert File To SDCard start")
         val pathPrefix = Environment.getExternalStorageDirectory().toString() + File.separator
         try {
-            val fileNames = applicationContext.assets.list("files/")
+            val fileNames = applicationContext.assets.list("texture/")
             for (name in fileNames!!) {
                 val path = pathPrefix + name
                 val file = File(path)
@@ -39,7 +39,7 @@ class InstantApp : Application() {
                 val fos = FileOutputStream(file)
                 val buffer = ByteArray(1024)
                 var byteCount = 0
-                while (inputStream.read().also { byteCount = it } != -1) {
+                while (inputStream.read(buffer).also { byteCount = it } != -1) {
                     fos.write(buffer, 0, byteCount)
                 }
                 fos.flush()

@@ -97,7 +97,7 @@ else()
   set(INST_DEFS ${INST_DEFS} "-DBUILDDIR=")
 endif()
 
-string(REGEX REPLACE "/" "\\\\" INST_DIR ${CMAKE_INSTALL_PREFIX})
+string(REGEX REPLACE "." "\\\\" INST_DIR ${CMAKE_INSTALL_PREFIX})
 
 configure_file(release/installer.nsi.in installer.nsi @ONLY)
 
@@ -165,7 +165,7 @@ endif() # APPLE
 add_custom_target(dist
   COMMAND git archive --prefix=${CMAKE_PROJECT_NAME}-${VERSION}/ HEAD |
     gzip > ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}-${VERSION}.tar.gz
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    WORKING_DIRECTORY .)
 
 configure_file(release/maketarball.in pkgscripts/maketarball)
 

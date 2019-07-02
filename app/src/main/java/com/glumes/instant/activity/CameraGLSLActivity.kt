@@ -1,4 +1,4 @@
-package com.glumes.instant
+package com.glumes.instant.activity
 
 import android.Manifest
 import android.content.BroadcastReceiver
@@ -9,12 +9,14 @@ import android.graphics.SurfaceTexture
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.glumes.ezcamerakit.EzCamera
 import com.glumes.ezcamerakit.EzCameraKit
 import com.glumes.ezcamerakit.RequestOptions
+import com.glumes.instant.R
+import com.glumes.instant.utils.CAMERA_ACTION
+import com.glumes.instant.utils.PermissionUtil
 import com.glumes.instantglsl.CameraRenderer
 
 class CameraGLSLActivity : AppCompatActivity() {

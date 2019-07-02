@@ -14,9 +14,9 @@
 #ifndef CMYK_H
 #define CMYK_H
 
-#include <jinclude.h>
+#include "jinclude.h"
 #define JPEG_INTERNALS
-#include <jpeglib.h>
+#include "jpeglib.h"
 #include "jconfigint.h"
 
 

@@ -32,7 +32,7 @@ set(BUILD ${DEFAULT_BUILD} CACHE STRING "Build string (default: ${DEFAULT_BUILD}
 # CMAKE_BUILD_TYPE has no meaning in Visual Studio, and it always defaults to
 # Debug when using NMake.
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
+  set(CMAKE_BUILD_TYPE release)
 endif()
 message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 
@@ -497,7 +497,7 @@ if(UNIX)
 endif()
 
 # Include directories and compiler definitions
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR} .)
 
 
 ###############################################################################
@@ -510,12 +510,12 @@ endif()
 message(STATUS "CMAKE_EXECUTABLE_SUFFIX = ${CMAKE_EXECUTABLE_SUFFIX}")
 
 set(JPEG_SOURCES jcapimin.c jcapistd.c jccoefct.c jccolor.c jcdctmgr.c jchuff.c
-  jcicc.c jcinit.c jcmainct.c jcmarker.c jcmaster.c jcomapi.c jcparam.c
-  jcphuff.c jcprepct.c jcsample.c jctrans.c jdapimin.c jdapistd.c jdatadst.c
-  jdatasrc.c jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdicc.c jdinput.c
-  jdmainct.c jdmarker.c jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c
-  jdtrans.c jerror.c jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c
-  jidctint.c jidctred.c jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c)
+        jcicc.c jcinit.c jcmainct.c jcmarker.c jcmaster.c jcomapi.c jcparam.c
+        jcphuff.c jcprepct.c jcsample.c jctrans.c jdapimin.c jdapistd.c jdatadst.c
+        jdatasrc.c jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdicc.c jdinput.c
+        jdmainct.c jdmarker.c jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c
+        jdtrans.c jerror.c jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c
+        jidctint.c jidctred.c jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c)
 
 if(WITH_ARITH_ENC OR WITH_ARITH_DEC)
   set(JPEG_SOURCES ${JPEG_SOURCES} jaricom.c)
@@ -562,13 +562,13 @@ endif()
 if(WITH_TURBOJPEG)
   if(ENABLE_SHARED)
     set(TURBOJPEG_SOURCES ${JPEG_SOURCES} $<TARGET_OBJECTS:simd> ${SIMD_OBJS}
-      turbojpeg.c transupp.c jdatadst-tj.c jdatasrc-tj.c rdbmp.c rdppm.c
-      wrbmp.c wrppm.c)
-    set(TJMAPFILE ${CMAKE_CURRENT_SOURCE_DIR}/turbojpeg-mapfile)
+            turbojpeg.c transupp.c jdatadst-tj.c jdatasrc-tj.c rdbmp.c rdppm.c
+            wrbmp.c wrppm.c)
+    set(TJMAPFILE turbojpeg-mapfile)
     if(WITH_JAVA)
       set(TURBOJPEG_SOURCES ${TURBOJPEG_SOURCES} turbojpeg-jni.c)
       include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
-      set(TJMAPFILE ${CMAKE_CURRENT_SOURCE_DIR}/turbojpeg-mapfile.jni)
+      set(TJMAPFILE turbojpeg-mapfile.jni)
     endif()
     add_library(turbojpeg SHARED ${TURBOJPEG_SOURCES})
     set_property(TARGET turbojpeg PROPERTY COMPILE_FLAGS
@@ -609,7 +609,7 @@ if(WITH_TURBOJPEG)
   if(ENABLE_STATIC)
     add_library(turbojpeg-static STATIC ${JPEG_SOURCES} $<TARGET_OBJECTS:simd>
       ${SIMD_OBJS} turbojpeg.c transupp.c jdatadst-tj.c jdatasrc-tj.c rdbmp.c
-      rdppm.c wrbmp.c wrppm.c)
+            rdppm.c wrbmp.c wrppm.c)
     set_property(TARGET turbojpeg-static PROPERTY COMPILE_FLAGS
       "-DBMP_SUPPORTED -DPPM_SUPPORTED")
     if(NOT MSVC)
@@ -617,7 +617,7 @@ if(WITH_TURBOJPEG)
     endif()
 
     add_executable(tjunittest-static tjunittest.c tjutil.c md5/md5.c
-      md5/md5hl.c)
+            md5/md5hl.c)
     target_link_libraries(tjunittest-static turbojpeg-static)
 
     add_executable(tjbench-static tjbench.c tjutil.c)
@@ -646,7 +646,7 @@ if(ENABLE_STATIC)
   target_link_libraries(cjpeg-static jpeg-static)
 
   add_executable(djpeg-static djpeg.c cdjpeg.c rdcolmap.c rdswitch.c wrgif.c
-    wrppm.c ${DJPEG_BMP_SOURCES})
+          wrppm.c ${DJPEG_BMP_SOURCES})
   set_property(TARGET djpeg-static PROPERTY COMPILE_FLAGS ${COMPILE_FLAGS})
   target_link_libraries(djpeg-static jpeg-static)
 
@@ -821,10 +821,10 @@ if(ENABLE_STATIC)
   set(TEST_LIBTYPES ${TEST_LIBTYPES} static)
 endif()
 
-set(TESTIMAGES ${CMAKE_CURRENT_SOURCE_DIR}/testimages)
+set(testimages testimages)
 set(MD5CMP ${CMAKE_CURRENT_BINARY_DIR}/md5/md5cmp)
 if(CMAKE_CROSSCOMPILING)
-  file(RELATIVE_PATH TESTIMAGES ${CMAKE_CURRENT_BINARY_DIR} ${TESTIMAGES})
+  file(RELATIVE_PATH testimages ${CMAKE_CURRENT_BINARY_DIR} ${TESTIMAGES})
   file(RELATIVE_PATH MD5CMP ${CMAKE_CURRENT_BINARY_DIR} ${MD5CMP})
 endif()
 
@@ -1164,7 +1164,7 @@ foreach(libtype ${TEST_LIBTYPES})
   # 1/8--   CC: YCC->RGB  SAMP: h2v2 merged  IDCT: 1x1 islow/2x2 islow
   #         ENT: huff
   foreach(scale 2_1 15_8 13_8 11_8 9_8 7_8 3_4 5_8 1_2 3_8 1_4 1_8)
-    string(REGEX REPLACE "_" "/" scalearg ${scale})
+    string(REGEX REPLACE "_" "." scalearg ${scale})
     add_bittest(djpeg 420m-islow-${scale}
       "-dct;int;-scale;${scalearg};-nosmooth;-ppm"
       testout_420m_islow_${scale}.ppm ${TESTIMAGES}/${TESTORIG}
@@ -1268,7 +1268,7 @@ foreach(libtype ${TEST_LIBTYPES})
 endforeach()
 
 add_custom_target(testclean COMMAND ${CMAKE_COMMAND} -P
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmakescripts/testclean.cmake)
+        cmakescripts/testclean.cmake)
 
 if(WITH_TURBOJPEG)
   configure_file(tjbenchtest.in tjbenchtest @ONLY)
@@ -1351,7 +1351,7 @@ if(WITH_TURBOJPEG)
         DESTINATION ${CMAKE_INSTALL_BINDIR} RENAME tjbench${EXE})
     endif()
   endif()
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/turbojpeg.h
+  install(FILES turbojpeg.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
@@ -1374,23 +1374,23 @@ endif()
 
 install(TARGETS rdjpgcom wrjpgcom RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.ijg
-  ${CMAKE_CURRENT_SOURCE_DIR}/README.md ${CMAKE_CURRENT_SOURCE_DIR}/example.txt
-  ${CMAKE_CURRENT_SOURCE_DIR}/tjexample.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg.txt
-  ${CMAKE_CURRENT_SOURCE_DIR}/structure.txt
-  ${CMAKE_CURRENT_SOURCE_DIR}/usage.txt ${CMAKE_CURRENT_SOURCE_DIR}/wizard.txt
-  ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES README.ijg
+        README.md example.txt
+        tjexample.c
+        libjpeg.txt
+        structure.txt
+        usage.txt wizard.txt
+        LICENSE.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
 if(WITH_JAVA)
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/java/TJExample.java
+  install(FILES java/TJExample.java
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 if(UNIX OR MINGW)
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cjpeg.1
-    ${CMAKE_CURRENT_SOURCE_DIR}/djpeg.1 ${CMAKE_CURRENT_SOURCE_DIR}/jpegtran.1
-    ${CMAKE_CURRENT_SOURCE_DIR}/rdjpgcom.1
-    ${CMAKE_CURRENT_SOURCE_DIR}/wrjpgcom.1
+  install(FILES cjpeg.1
+          djpeg.1 jpegtran.1
+          rdjpgcom.1
+          wrjpgcom.1
     DESTINATION ${CMAKE_INSTALL_MANDIR}/man1)
 endif()
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pkgscripts/libjpeg.pc
@@ -1398,13 +1398,13 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pkgscripts/libjpeg.pc
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/jconfig.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/jerror.h ${CMAKE_CURRENT_SOURCE_DIR}/jmorecfg.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/jpeglib.h
+        jerror.h jmorecfg.h
+        jpeglib.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 include(cmakescripts/BuildPackages.cmake)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmakescripts/cmake_uninstall.cmake.in"
+configure_file("cmakescripts/cmake_uninstall.cmake.in"
   "cmake_uninstall.cmake" IMMEDIATE @ONLY)
 
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P cmake_uninstall.cmake)

@@ -98,38 +98,38 @@ endif()
 add_custom_target(jsimdcfg COMMAND
   ${CMAKE_C_COMPILER} -E -I${CMAKE_BINARY_DIR} -I${CMAKE_CURRENT_BINARY_DIR}
     -I${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/nasm/jsimdcfg.inc.h |
+        nasm/jsimdcfg.inc.h |
   ${GREP} -E '^[\;%]|^\ %' | sed 's%_cpp_protection_%%' |
   sed 's@% define@%define@g' >${CMAKE_CURRENT_SOURCE_DIR}/nasm/jsimdcfg.inc)
 
 if(CPU_TYPE STREQUAL "x86_64")
   set(SIMD_SOURCES x86_64/jsimdcpu.asm x86_64/jfdctflt-sse.asm
-    x86_64/jccolor-sse2.asm x86_64/jcgray-sse2.asm x86_64/jchuff-sse2.asm
-    x86_64/jcphuff-sse2.asm x86_64/jcsample-sse2.asm x86_64/jdcolor-sse2.asm
-    x86_64/jdmerge-sse2.asm x86_64/jdsample-sse2.asm x86_64/jfdctfst-sse2.asm
-    x86_64/jfdctint-sse2.asm x86_64/jidctflt-sse2.asm x86_64/jidctfst-sse2.asm
-    x86_64/jidctint-sse2.asm x86_64/jidctred-sse2.asm x86_64/jquantf-sse2.asm
-    x86_64/jquanti-sse2.asm
-    x86_64/jccolor-avx2.asm x86_64/jcgray-avx2.asm x86_64/jcsample-avx2.asm
-    x86_64/jdcolor-avx2.asm x86_64/jdmerge-avx2.asm x86_64/jdsample-avx2.asm
-    x86_64/jfdctint-avx2.asm x86_64/jidctint-avx2.asm x86_64/jquanti-avx2.asm)
+          x86_64/jccolor-sse2.asm x86_64/jcgray-sse2.asm x86_64/jchuff-sse2.asm
+          x86_64/jcphuff-sse2.asm x86_64/jcsample-sse2.asm x86_64/jdcolor-sse2.asm
+          x86_64/jdmerge-sse2.asm x86_64/jdsample-sse2.asm x86_64/jfdctfst-sse2.asm
+          x86_64/jfdctint-sse2.asm x86_64/jidctflt-sse2.asm x86_64/jidctfst-sse2.asm
+          x86_64/jidctint-sse2.asm x86_64/jidctred-sse2.asm x86_64/jquantf-sse2.asm
+          x86_64/jquanti-sse2.asm
+          x86_64/jccolor-avx2.asm x86_64/jcgray-avx2.asm x86_64/jcsample-avx2.asm
+          x86_64/jdcolor-avx2.asm x86_64/jdmerge-avx2.asm x86_64/jdsample-avx2.asm
+          x86_64/jfdctint-avx2.asm x86_64/jidctint-avx2.asm x86_64/jquanti-avx2.asm)
 else()
   set(SIMD_SOURCES i386/jsimdcpu.asm i386/jfdctflt-3dn.asm
-    i386/jidctflt-3dn.asm i386/jquant-3dn.asm
-    i386/jccolor-mmx.asm i386/jcgray-mmx.asm i386/jcsample-mmx.asm
-    i386/jdcolor-mmx.asm i386/jdmerge-mmx.asm i386/jdsample-mmx.asm
-    i386/jfdctfst-mmx.asm i386/jfdctint-mmx.asm i386/jidctfst-mmx.asm
-    i386/jidctint-mmx.asm i386/jidctred-mmx.asm i386/jquant-mmx.asm
-    i386/jfdctflt-sse.asm i386/jidctflt-sse.asm i386/jquant-sse.asm
-    i386/jccolor-sse2.asm i386/jcgray-sse2.asm i386/jchuff-sse2.asm
-    i386/jcphuff-sse2.asm i386/jcsample-sse2.asm i386/jdcolor-sse2.asm
-    i386/jdmerge-sse2.asm i386/jdsample-sse2.asm i386/jfdctfst-sse2.asm
-    i386/jfdctint-sse2.asm i386/jidctflt-sse2.asm i386/jidctfst-sse2.asm
-    i386/jidctint-sse2.asm i386/jidctred-sse2.asm i386/jquantf-sse2.asm
-    i386/jquanti-sse2.asm
-    i386/jccolor-avx2.asm i386/jcgray-avx2.asm i386/jcsample-avx2.asm
-    i386/jdcolor-avx2.asm i386/jdmerge-avx2.asm i386/jdsample-avx2.asm
-    i386/jfdctint-avx2.asm i386/jidctint-avx2.asm i386/jquanti-avx2.asm)
+          i386/jidctflt-3dn.asm i386/jquant-3dn.asm
+          i386/jccolor-mmx.asm i386/jcgray-mmx.asm i386/jcsample-mmx.asm
+          i386/jdcolor-mmx.asm i386/jdmerge-mmx.asm i386/jdsample-mmx.asm
+          i386/jfdctfst-mmx.asm i386/jfdctint-mmx.asm i386/jidctfst-mmx.asm
+          i386/jidctint-mmx.asm i386/jidctred-mmx.asm i386/jquant-mmx.asm
+          i386/jfdctflt-sse.asm i386/jidctflt-sse.asm i386/jquant-sse.asm
+          i386/jccolor-sse2.asm i386/jcgray-sse2.asm i386/jchuff-sse2.asm
+          i386/jcphuff-sse2.asm i386/jcsample-sse2.asm i386/jdcolor-sse2.asm
+          i386/jdmerge-sse2.asm i386/jdsample-sse2.asm i386/jfdctfst-sse2.asm
+          i386/jfdctint-sse2.asm i386/jidctflt-sse2.asm i386/jidctfst-sse2.asm
+          i386/jidctint-sse2.asm i386/jidctred-sse2.asm i386/jquantf-sse2.asm
+          i386/jquanti-sse2.asm
+          i386/jccolor-avx2.asm i386/jcgray-avx2.asm i386/jcsample-avx2.asm
+          i386/jdcolor-avx2.asm i386/jdmerge-avx2.asm i386/jdsample-avx2.asm
+          i386/jfdctint-avx2.asm i386/jidctint-avx2.asm i386/jquanti-avx2.asm)
 endif()
 
 if(MSVC_IDE)
@@ -306,8 +306,8 @@ endif()
 elseif(CPU_TYPE STREQUAL "loongson")
 
 set(SIMD_SOURCES loongson/jccolor-mmi.c loongson/jcsample-mmi.c
-  loongson/jdcolor-mmi.c loongson/jdsample-mmi.c loongson/jfdctint-mmi.c
-  loongson/jidctint-mmi.c loongson/jquanti-mmi.c)
+        loongson/jdcolor-mmi.c loongson/jdsample-mmi.c loongson/jfdctint-mmi.c
+        loongson/jidctint-mmi.c loongson/jquanti-mmi.c)
 
 if(CMAKE_COMPILER_IS_GNUCC)
   foreach(file ${SIMD_SOURCES})
@@ -347,11 +347,11 @@ if(NOT HAVE_ALTIVEC)
 endif()
 
 set(SIMD_SOURCES powerpc/jccolor-altivec.c powerpc/jcgray-altivec.c
-  powerpc/jcsample-altivec.c powerpc/jdcolor-altivec.c
-  powerpc/jdmerge-altivec.c powerpc/jdsample-altivec.c
-  powerpc/jfdctfst-altivec.c powerpc/jfdctint-altivec.c
-  powerpc/jidctfst-altivec.c powerpc/jidctint-altivec.c
-  powerpc/jquanti-altivec.c)
+        powerpc/jcsample-altivec.c powerpc/jdcolor-altivec.c
+        powerpc/jdmerge-altivec.c powerpc/jdsample-altivec.c
+        powerpc/jfdctfst-altivec.c powerpc/jfdctint-altivec.c
+        powerpc/jidctfst-altivec.c powerpc/jidctint-altivec.c
+        powerpc/jquanti-altivec.c)
 
 set_source_files_properties(${SIMD_SOURCES} PROPERTIES
   COMPILE_FLAGS -maltivec)
