@@ -34,6 +34,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/pnghelper/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libjpeg/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/)
 
+include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/base/)
+
 
 add_library( # Sets the name of the library.
         instantglsl
@@ -43,6 +45,7 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/instant-renderer.cpp
+        ${CMAKE_SOURCE_DIR}/src/main/cpp/base/Log.cpp
         )
 
 add_library( # Sets the name of the library.
@@ -53,6 +56,7 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/camera-renderer.cpp
+        ${CMAKE_SOURCE_DIR}/src/main/cpp/base/Log.cpp
         )
 
 
@@ -90,7 +94,9 @@ add_library( # Sets the name of the library.
         SHARED
         # Provides a relative path to your source file(s).
         ${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/JpegHelper.cpp
+        ${CMAKE_SOURCE_DIR}/src/main/cpp/base/Log.cpp
         )
+
 
 target_link_libraries( # Specifies the target library.
         jpeghelper

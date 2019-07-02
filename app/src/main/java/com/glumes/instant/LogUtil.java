@@ -49,16 +49,6 @@ public class LogUtil {
         }
     }
 
-    /**
-     * Used for sdk developers to debug
-     * @param msg
-     * @return
-     */
-    public static void db(String msg){
-        if(LOGDB_DEBUG && mLogAll){
-            Log.d(DEBUG, getInformation(msg));
-        }
-    }
 
     /**
      * Used for exception log

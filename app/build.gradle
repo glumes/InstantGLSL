@@ -38,6 +38,9 @@ dependencies {
     implementation deps.kotlin
     implementation deps.appcompatv7
     implementation deps.constraint_layout
+    implementation deps.rxjava
+    implementation deps.rxandroid
+
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'

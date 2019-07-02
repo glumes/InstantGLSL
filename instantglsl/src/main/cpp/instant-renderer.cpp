@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <PngHelper.h>
-
+#include <Log.h>
 
 using namespace std;
 using namespace OpenGLUtil;
@@ -36,13 +36,6 @@ ANativeWindow *nativeWindow = nullptr;
 TextureDrawer *drawer = nullptr;
 
 GLint mTextureId = 0;
-
-
-#define OPENGL_TAG "OpenGLUtil"
-
-#define TLOGD(...) __android_log_print(ANDROID_LOG_DEBUG,OPENGL_TAG,__VA_ARGS__)
-#define TLOGE(...) __android_log_print(ANDROID_LOG_ERROR,OPENGL_TAG,__VA_ARGS__)
-
 
 extern "C" {
 JNIEXPORT void JNICALL
@@ -76,15 +69,15 @@ Java_com_glumes_instantglsl_InstantRenderer_shaderChange(JNIEnv *env, jobject, j
 
     const char *path = env->GetStringUTFChars(jpath, 0);
 
-    TLOGE("shader change");
+    Log::d("shader change");
 
     const char *shader = FileFastMap::fastRead(path);
 
     if (shader != nullptr) {
-        TLOGE("shader is not null");
-        TLOGE("shader is %s", shader);
+        Log::d("shader is not null");
+        Log::d("shader is %s", shader);
     } else {
-        TLOGE("shader is empty");
+        Log::d("shader is empty");
     }
 
     drawer->onShaderChange(shader);
@@ -145,7 +138,7 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
                                                                     jstring filePath_) {
     const char *filePath = env->GetStringUTFChars(filePath_, 0);
 
-    TLOGD("path is %s",filePath);
+    Log::d("path is %s",filePath);
 
     int w, h, n;
 
@@ -165,7 +158,7 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
 
     mTextureId = loadTexture(w, h, helper.getPixelData());
 
-    TLOGD("on texturechange");
+    Log::d("on texturechange");
 
     drawer->onTextureChange(mTextureId);
 
