@@ -81,23 +81,23 @@ PngHelper::PngHelper(const string &file_name) :
     png_get_IHDR(png, infop, &mWidth, &mHeight, &mBitDepth, &mColorType, &mInterlaceType,
                  &mCompressionType, &mFilterType);
 
-//    unsigned int row_bytes = png_get_rowbytes(png, infop);
-//    if (mPixelData != nullptr) {
-//        delete[] mPixelData;
-//        mPixelData = nullptr;
-//    }
-//    mPixelData = new unsigned char[row_bytes * mHeight];
-//    png_bytepp rows = png_get_rows(png, infop);
-//    for (int i = 0; i < mHeight; ++i) {
-//        memcpy(mPixelData + (row_bytes * i), rows[i], row_bytes);
-//    }
-
-    row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * mHeight);
-    for (int y = 0; y < mHeight; y++) {
-        row_pointers[y] = (png_byte *) malloc(png_get_rowbytes(png, infop));
+    unsigned int row_bytes = png_get_rowbytes(png, infop);
+    if (mPixelData != nullptr) {
+        delete[] mPixelData;
+        mPixelData = nullptr;
+    }
+    mPixelData = new unsigned char[row_bytes * mHeight];
+    png_bytepp rows = png_get_rows(png, infop);
+    for (int i = 0; i < mHeight; ++i) {
+        memcpy(mPixelData + (row_bytes * i), rows[i], row_bytes);
     }
 
-    png_read_image(png, row_pointers);
+//    row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * mHeight);
+//    for (int y = 0; y < mHeight; y++) {
+//        row_pointers[y] = (png_byte *) malloc(png_get_rowbytes(png, infop));
+//    }
+//
+//    png_read_image(png, row_pointers);
 
     png_destroy_read_struct(&png, &infop, nullptr);
 };

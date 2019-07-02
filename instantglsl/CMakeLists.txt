@@ -18,6 +18,10 @@ ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/glm)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng)
 ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/pnghelper)
 
+#ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper)
+
+
+
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/drawer/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/opengl/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/filemap/)
@@ -26,6 +30,9 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/camerahelper/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/glm/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/pnghelper/)
+
+include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libjpeg/)
+#include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/)
 
 
 add_library( # Sets the name of the library.
@@ -65,6 +72,34 @@ find_library( # Sets the name of the path variable.
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
+
+
+
+add_library(libturbojpeg SHARED IMPORTED)
+set_target_properties(libturbojpeg PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a/libturbojpeg.so)
+
+add_library(libjpeg SHARED IMPORTED)
+set_target_properties(libturbojpeg PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a/libjpeg.so)
+
+
+add_library( # Sets the name of the library.
+        jpeghelper
+        # Sets the library as a shared library.
+        SHARED
+        # Provides a relative path to your source file(s).
+        ${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/JpegHelper.cpp
+        )
+
+target_link_libraries( # Specifies the target library.
+        jpeghelper
+        android
+        libturbojpeg
+        libjpeg
+        # Links the target library to the log library
+        ${log-lib})
+
 
 
 target_link_libraries( # Specifies the target library.
