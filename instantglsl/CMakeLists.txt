@@ -32,7 +32,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libpng/)
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/pnghelper/)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/libjpeg/)
-#include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/)
+include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp/jpeghelper/)
 
 
 add_library( # Sets the name of the library.
