@@ -96,9 +96,12 @@ JpegHelper::read_jpeg_file(const char *jpeg_file, unsigned char **rgb_buffer, in
 int JpegHelper::generateJpeg(u_int8_t *data, int w, int h, int quality, const char *location,
                              int quality1) {
     int nComponent = 3;
+    // 存储信息的结构体
     struct jpeg_compress_struct jpegCompressStruct;
 
+    // 错误设置
     struct my_error_mgr jem;
+    // 绑定错误处理的结构对象
     jpegCompressStruct.err = jpeg_std_error(&jem.pub);
 
     if (setjmp(jem.setjmp_buffer)) {
@@ -111,6 +114,7 @@ int JpegHelper::generateJpeg(u_int8_t *data, int w, int h, int quality, const ch
         return 0;
     }
 
+    // 初始化结构信息
     jpeg_create_compress(&jpegCompressStruct);
 
     jpeg_stdio_dest(&jpegCompressStruct, fp);
@@ -148,3 +152,106 @@ int JpegHelper::generateJpeg(u_int8_t *data, int w, int h, int quality, const ch
 
     return 1;
 }
+
+int JpegHelper::read_jpeg_file(const char *file) {
+
+    FILE *fp = nullptr;
+    int row_stride;
+    JSAMPARRAY buffer;
+
+    if (fopen(file, "rb") == nullptr) {
+        Log::d("open file failed");
+        return 0;
+    }
+
+    struct jpeg_decompress_struct cinfo;
+
+    struct jpeg_error_mgr jerr;
+
+    cinfo.err = jpeg_std_error(&jerr);
+
+
+    jpeg_create_decompress(&cinfo);
+
+    jpeg_stdio_src(&cinfo, fp);
+
+    jpeg_read_header(&cinfo, TRUE);
+
+    Log::d("width is %d height is %d", cinfo.image_width, cinfo.image_height);
+
+    jpeg_start_decompress(&cinfo);
+
+
+//    row_stride = cinfo.output_width * cinfo.output_components;
+
+
+    unsigned long width = cinfo.output_width;
+    unsigned long height = cinfo.output_height;
+    unsigned short depth = cinfo.output_components;
+    row_stride = cinfo.output_width * cinfo.output_components;
+
+    buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
+
+    unsigned char *src_buff;
+    src_buff = static_cast<unsigned char *>(malloc(width * height * depth));
+    memset(src_buff, 0, sizeof(unsigned char) * width * height * depth);
+
+    unsigned char *point = src_buff;
+
+    while (cinfo.output_scanline < height) {
+        jpeg_read_scanlines(&cinfo, buffer, 1);
+        memcpy(point, *buffer, width * depth);
+        point += width * depth;
+    }
+
+    jpeg_finish_decompress(&cinfo);
+    jpeg_destroy_decompress(&cinfo);
+
+    free(src_buff);
+
+    fclose(fp);
+
+    return 0;
+}
+
+int JpegHelper::write_jpeg_file(const char *filename, int image_height, int image_width,
+                                JSAMPLE *image_buffer, int quality) {
+    struct jpeg_compress_struct cinfo;
+    struct jpeg_error_mgr jerr;
+    FILE *outfile;
+
+    JSAMPROW row_pointer[1];
+    int row_stride;
+    cinfo.err = jpeg_std_error(&jerr);
+
+    jpeg_create_compress(&cinfo);
+
+    if ((outfile = fopen(filename, "wb")) == nullptr) {
+        Log::d("open file failed");
+        return 0;
+    }
+
+    jpeg_stdio_dest(&cinfo, outfile);
+
+    cinfo.image_width = image_width;
+    cinfo.image_height = image_height;
+    cinfo.input_components = 3;
+    cinfo.in_color_space = JCS_RGB;
+
+    jpeg_set_defaults(&cinfo);
+    jpeg_set_quality(&cinfo, quality, TRUE);
+
+    jpeg_start_compress(&cinfo, TRUE);
+
+    row_stride = image_width * 3;
+    while (cinfo.next_scanline < cinfo.image_height) {
+        row_pointer[0] = &image_buffer[cinfo.next_scanline * row_stride];
+        jpeg_write_scanlines(&cinfo, row_pointer, 1);
+    }
+
+    jpeg_finish_compress(&cinfo);
+    jpeg_destroy_compress(&cinfo);
+    return 0;
+}
+
+

@@ -83,7 +83,7 @@ Java_com_glumes_instantglsl_demo_JpegDemo_compressBitmap(JNIEnv *env, jobject in
 
     JpegHelper jpegHelper;
 
-    jpegHelper.generateJpeg(tmpData, width, height, 100, file,
+    jpegHelper.generateJpeg(tmpData, width, height, 50, file,
                             0);
 
     AndroidBitmap_unlockPixels(env, bitmap);
