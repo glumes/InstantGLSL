@@ -10,10 +10,13 @@
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_glumes_instantglsl_demo_JpegDemo_compressBitmap(JNIEnv *env, jobject instance,
-                                                         jobject bitmap, jstring file_) {
-    const char *file = env->GetStringUTFChars(file_, 0);
+                                                         jobject bitmap, jstring file_,
+                                                         jstring ofile_) {
+    const char *ifile = env->GetStringUTFChars(file_, 0);
+    const char *ofile = env->GetStringUTFChars(ofile_, 0);
 
-    Log::d("test");
+    Log::d("test and input file path is %s", ifile);
+    Log::d("test and output file path is %s", ofile);
 
     AndroidBitmapInfo bitmapInfo;
     int ret;
@@ -83,12 +86,20 @@ Java_com_glumes_instantglsl_demo_JpegDemo_compressBitmap(JNIEnv *env, jobject in
 
     JpegHelper jpegHelper;
 
-    jpegHelper.generateJpeg(tmpData, width, height, 50, file,
-                            0);
+    unsigned char *jpegData;
+    int jpegSize;
+    int jpegWidth;
+    int jpegHeight;
+
+    jpegHelper.read_jpeg_file(ifile, &jpegData, &jpegSize, &jpegWidth, &jpegHeight);
+
+    Log::d("jpeg size is %d and width is %d and height is %d", jpegSize, jpegWidth, jpegHeight);
+
 
     AndroidBitmap_unlockPixels(env, bitmap);
 
-    env->ReleaseStringUTFChars(file_, file);
+    env->ReleaseStringUTFChars(file_, ifile);
+    env->ReleaseStringUTFChars(ofile_, ofile);
 
     return 0;
 }

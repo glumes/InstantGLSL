@@ -71,6 +71,7 @@ add_library( # Sets the name of the library.
         ${CMAKE_SOURCE_DIR}/src/main/cpp/base/Log.cpp
         )
 
+message("cmake message")
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -121,6 +122,7 @@ target_link_libraries( # Specifies the target library.
         android
         png
         pnghelper
+        jpeghelper
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})

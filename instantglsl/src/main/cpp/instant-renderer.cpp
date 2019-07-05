@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <PngHelper.h>
 #include <Log.h>
+#include <JpegHelper.h>
 
 using namespace std;
 using namespace OpenGLUtil;
@@ -138,7 +139,7 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
                                                                     jstring filePath_) {
     const char *filePath = env->GetStringUTFChars(filePath_, 0);
 
-    Log::d("path is %s",filePath);
+    Log::d("path is %s", filePath);
 
     int w, h, n;
 
@@ -146,7 +147,7 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
     unsigned char *content = stbi_load(filePath, &w, &h, &n, 0);
 
 //
-    PngHelper helper(filePath);
+//    PngHelper helper(filePath);
 
 //    TLOGD("png width is %d height is %d and alpha is %d",helper.getWidth(),helper.getHeight(),helper.has_alpha());
 
@@ -156,10 +157,40 @@ Java_com_glumes_instantglsl_InstantRenderer_textureChagneFromSdcard(JNIEnv *env,
 //
 //    helper.write_png_file("/storage/emulated/0/logo22.png");
 
-    mTextureId = loadTexture(w, h, helper.getPixelData());
+//
+//    JpegHelper jpegHelper;
+//
+//    unsigned char** buffer;
+//
+//    int num = 20;
+//
+//
+//    jpegHelper.read_jpeg_file(filePath, buffer, num);
+//
+//
+//
+//    Log::d("num is %d", num);
+
+//    mTextureId = loadTexture(w, h, helper.getPixelData());
+//    mTextureId = loadTexture(w, h, *buffer);
+
+
+
+    JpegHelper jpegHelper;
+
+    unsigned char *jpegData;
+    int jpegSize;
+    int jpegWidth;
+    int jpegHeight;
+
+    jpegHelper.read_jpeg_file(filePath, &jpegData, &jpegSize, &jpegWidth, &jpegHeight);
+
+
+    Log::d("jpeg size is %d and width is %d and height is %d", jpegSize, jpegWidth, jpegHeight);
 
     Log::d("on texturechange");
 
+    mTextureId = loadTexture(w, h, jpegData);
     drawer->onTextureChange(mTextureId);
 
     env->ReleaseStringUTFChars(filePath_, filePath);

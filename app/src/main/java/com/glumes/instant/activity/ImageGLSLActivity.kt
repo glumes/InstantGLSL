@@ -12,6 +12,7 @@ import android.view.SurfaceHolder
 import com.glumes.instant.R
 import com.glumes.instant.utils.IMAGE_ACTION
 import com.glumes.instant.utils.PermissionsUtils
+import com.glumes.instantglsl.ImagePath
 import com.glumes.instantglsl.InstantRenderer
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -24,6 +25,10 @@ class ImageGLSLActivity : AppCompatActivity() {
 
     val assetPath3 = "texture/logo2.png"
     var sdPath = Environment.getExternalStorageDirectory().toString() + File.separator + "logo.png"
+    var jpegPath = ImagePath.JPG_IMAGE_PATH
+
+    val path = Environment.getExternalStorageDirectory().absolutePath + File.separator + "compress.jpg"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,7 +48,7 @@ class ImageGLSLActivity : AppCompatActivity() {
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
 
 //                mInstantRenderer.textureChangeFromeAsset(assetPath3, assets)
-                mInstantRenderer.textureChagneFromSdcard(sdPath)
+                mInstantRenderer.textureChagneFromSdcard(path)
 
                 mInstantRenderer.renderer()
             }

@@ -18,7 +18,7 @@ public class JpegDemo {
         System.loadLibrary("thirdparty");
     }
 
-    private native int compressBitmap(Bitmap bitmap, String file);
+    private native int compressBitmap(Bitmap bitmap, String intput_file,String output_file);
 
     private native int decompressBitmap(Bitmap bitmap);
 
@@ -27,8 +27,9 @@ public class JpegDemo {
         Bitmap bitmap = BitmapFactory.decodeFile(ImagePath.JPG_IMAGE_PATH);
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "compress.jpg";
+        String oPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "compress2.jpg";
 
-        compressBitmap(bitmap,path);
+        compressBitmap(bitmap,path,oPath);
 
     }
 }

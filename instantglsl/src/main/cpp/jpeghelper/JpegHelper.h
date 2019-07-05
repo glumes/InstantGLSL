@@ -32,6 +32,8 @@ public:
                         JSAMPLE *image_buffer, int quality);
 
     int read_jpeg_file(const char *file);
+
+    int read_jpeg_file(const char *file, unsigned char* &src_buffer,int &num);
 };
 
 
