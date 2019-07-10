@@ -30,7 +30,10 @@ JpegHelper::read_jpeg_file(const char *jpeg_file, unsigned char **rgb_buffer, in
 
     JSAMPARRAY buffer;
 
-    Log::d("start read jpeg file path is %s",jpeg_file);
+    uint8_t *pixels = nullptr;
+    JSAMPROW *row_pointer = nullptr;
+
+    Log::d("start read jpeg file path is %s", jpeg_file);
 
     int row_stride = 0;
 
@@ -66,14 +69,37 @@ JpegHelper::read_jpeg_file(const char *jpeg_file, unsigned char **rgb_buffer, in
 
     //cinfo.out_color_space = JCS_RGB; //JCS_YCbCr;  // 设置输出格式
 
+    cinfo.out_color_components = 4;
+    cinfo.out_color_space = JCS_EXT_RGBA;
+
     jpeg_start_decompress(&cinfo);
 
-    row_stride = cinfo.output_width * cinfo.output_components;
+    row_stride = cinfo.image_width << 2;
 
-    *width = cinfo.output_width;
-    *height = cinfo.output_height;
+    *width = cinfo.image_width;
+    *height = cinfo.image_height;
+
+//
+//    pixels = static_cast<uint8_t *>(malloc(cinfo.image_width * cinfo.image_height * 4));
+//
+//    row_pointer = static_cast<JSAMPROW *>(malloc(sizeof(JSAMPROW) * cinfo.output_height));
+//
+//    for (int i = 0; i < cinfo.output_height; ++i) {
+//        row_pointer[i] = &pixels[i * row_stride];
+//    }
+//
+//    while (cinfo.output_scanline < cinfo.output_height) {
+//        jpeg_read_scanlines(&cinfo, &row_pointer[cinfo.output_scanline],
+//                            cinfo.output_height - cinfo.output_scanline);
+//    }
+//
+//    *rgb_buffer = pixels;
+//
+//    *size = row_stride * cinfo.output_height;
+
 
     rgb_size = row_stride * cinfo.output_height; // 总大小
+
     *size = rgb_size;
 
     buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
@@ -96,6 +122,7 @@ JpegHelper::read_jpeg_file(const char *jpeg_file, unsigned char **rgb_buffer, in
         memcpy(tmp_buffer, buffer[0], row_stride);
         tmp_buffer += row_stride;
     }
+
 
     jpeg_finish_decompress(&cinfo);
     jpeg_destroy_decompress(&cinfo);
@@ -261,7 +288,7 @@ int JpegHelper::write_jpeg_file(const char *filename, int image_height, int imag
     return 0;
 }
 
-int JpegHelper::read_jpeg_file(const char *file, unsigned char* &src_point, int &num) {
+int JpegHelper::read_jpeg_file(const char *file, unsigned char *&src_point, int &num) {
 
     FILE *fp = nullptr;
     int row_stride;
