@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.SurfaceHolder
 import com.glumes.instant.R
+import com.glumes.instant.utils.FileUtils
 import com.glumes.instant.utils.IMAGE_ACTION
 import com.glumes.instant.utils.PermissionsUtils
 import com.glumes.instantglsl.ImagePath
@@ -35,13 +36,6 @@ class ImageGLSLActivity : AppCompatActivity() {
         mInstantRenderer = InstantRenderer()
         mContext = this
         mShaderReceiver = ShaderReceiver()
-
-        val permisssion = Array(2) {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        }
-
-        PermissionsUtils.checkAndRequestMorePermissions(this, permisssion, 1) { }
 
         surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
 
